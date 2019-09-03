@@ -11,7 +11,7 @@ Features
 
 Fast and easy conditional indexing into pd.DataFrames and pd.Series using the pandasbikeshed.fancyfilter utilities.
 
-Just import it the small accessor ``me`` via::
+Just import the small accessor ``me`` via::
 
     from pandasbikeshed.fancyfilter import me
 
@@ -27,9 +27,10 @@ As you don't have to store an intermediate DataFrame or boolean masks seperately
 
 e.g.::
 
+    df = ... # Some tidy table with order, customer and shipment information
     query_customers = [...] # Some customers we want to query
     count_unique = lambda x: x.nunique()
-    analysis = (df.loc[me.customer.isin(query_customers) & me.order == 'active']
+    analysis = (df.loc[(me.customer.isin(query_customers)) & (me.order == 'active')]
                 .groupby('shipment')
                 .agg(items=('id', 'count'),
                     cost=('item_prize', 'sum'),
@@ -37,6 +38,8 @@ e.g.::
                     num_destinations=('city', count_unique))
                 .loc[me.num_customers > 1]
                 .sort_values(by='cost'))
+
+Currently implemented are the standard python comparison operators (``<``, ``<=``, ``==``, ``!=``, ``>=``, ``>``) and logical chaining with ``&``, ``|`` and ``^`` as well convenience functions for ``.isin``, ``.isna`` and a ``np.isfinite`` like check.
 
 Credits
 -------
