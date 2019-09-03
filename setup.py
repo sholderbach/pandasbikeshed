@@ -5,13 +5,7 @@
 
 from setuptools import setup, find_packages
 
-with open('README.rst') as readme_file:
-    readme = readme_file.read()
-
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-
-requirements = [ ]
+requirements = ['pandas', 'numpy', 'seaborn']
 
 setup_requirements = ['pytest-runner', ]
 
@@ -36,7 +30,6 @@ setup(
     description="This is a fine selection of random useful or useless code and helper functions collected to simplify my life with the great pandas.",
     install_requires=requirements,
     license="MIT license",
-    long_description=readme + '\n\n' + history,
     include_package_data=True,
     keywords='pandasbikeshed',
     name='pandasbikeshed',
