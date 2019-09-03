@@ -6,7 +6,7 @@ def _try_call(obj, arg):
     if callable(obj):
         return obj(arg, internal=True)
     else:
-        obj
+        return obj
 #
 class BasicFilter(object):
     def __init__(self):
@@ -41,26 +41,29 @@ class BasicFilter(object):
 
     # Overloading of the necessary operators
     def __eq__(self, value):
-        return OpsFilter(self, lambda x, inner: inner(x)==_try_call(value, x))
+        return OpsFilter(self, lambda x, inner: inner(x) == _try_call(value, x))
 
     def __ne__(self, value):
-        return OpsFilter(self, lambda x, inner: inner(x)!=_try_call(value, x))
+        return OpsFilter(self, lambda x, inner: inner(x) != _try_call(value, x))
 
     def __gt__(self, value):
-        return OpsFilter(self, lambda x, inner: inner(x)>_try_call(value, x))
+        return OpsFilter(self, lambda x, inner: inner(x) > _try_call(value, x))
 
     def __ge__(self, value):
-        return OpsFilter(self, lambda x, inner: inner(x)>=_try_call(value, x))
+        return OpsFilter(self, lambda x, inner: inner(x) >= _try_call(value, x))
 
     def __lt__(self, value):
-        return OpsFilter(self, lambda x, inner: inner(x)<_try_call(value, x))
+        return OpsFilter(self, lambda x, inner: inner(x) < _try_call(value, x))
 
     def __le__(self, value):
-        return OpsFilter(self, lambda x, inner: inner(x)<=_try_call(value, x))
+        return OpsFilter(self, lambda x, inner: inner(x) <= _try_call(value, x))
 
     # Add custom operations here
     def isin(self, value):
         return OpsFilter(self, lambda x, inner: inner(x).isin(_try_call(value, x)))
+
+    def notin(self, value):
+        return OpsFilter(self, lambda x, inner: ~inner(x).isin(_try_call(value, x)))
 
     def isna(self):
         return OpsFilter(self, lambda x, inner: inner(x).isna())
