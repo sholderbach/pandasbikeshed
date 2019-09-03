@@ -6,6 +6,17 @@ Pandas-Bikeshed
 This is a fine selection of random useful or useless code and helper functions collected to simplify my life with the great pandas.
 
 
+Installation
+------------
+As of now I do not recommend the installation in a production environment. 
+
+Therefore cloning the environment and using ``pip install --editable`` is recommended for your testing endavours into the pandas-bikeshed
+
+If you simply want to give it a go in your virtual environment run::
+
+    pip install git+https://github.com/sholderbach/pandasbikeshed.git@master
+
+
 Features
 --------
 
@@ -39,7 +50,7 @@ e.g.::
                 .loc[me.num_customers > 1]
                 .sort_values(by='cost'))
 
-Currently implemented are the standard python comparison operators (``<``, ``<=``, ``==``, ``!=``, ``>=``, ``>``) and logical chaining with ``&``, ``|`` and ``^`` as well convenience functions for ``.isin``, ``.isna`` and a ``np.isfinite`` like check.
+Currently implemented are the standard python comparison operators (``<``, ``<=``, ``==``, ``!=``, ``>=``, ``>``) ``.isin`` (to select all entries that are present in a list passed to ``.isin``) and logical chaining with ``&``, ``|`` and ``^`` as well as convenience functions for ``.isna`` and a ``np.isfinite`` like check.
 
 Credits
 -------
