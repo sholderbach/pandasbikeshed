@@ -105,3 +105,33 @@ def test_boolmask_inverted():
 
 def test_not_operator():
     assert_frame_equal(ex_df2[~(me.A == 'b')], ex_df2[me.A != 'b'])
+
+def test_math():
+    assert_series_equal((me * 2)(ex_series), ex_series * 2)
+    assert_series_equal((me + 2)(ex_series), ex_series + 2)
+    assert_series_equal((me - 2)(ex_series), ex_series - 2)
+    assert_series_equal((me / 2)(ex_series), ex_series / 2)
+    assert_series_equal((me ** 2)(ex_series), ex_series ** 2)
+    # With indexing
+    assert_series_equal((me.A * 2)(ex_df), ex_df.A * 2)
+    assert_series_equal((me.A + 2)(ex_df), ex_df.A + 2)
+    assert_series_equal((me.A - 2)(ex_df), ex_df.A - 2)
+    assert_series_equal((me.A / 2)(ex_df), ex_df.A / 2)
+    assert_series_equal((me.A ** 2)(ex_df), ex_df.A ** 2)
+
+def test_inverted_math():
+    assert_series_equal((2 * me)(ex_series), 2 * ex_series)
+    assert_series_equal((2 + me)(ex_series), 2 + ex_series)
+    assert_series_equal((2 - me)(ex_series), 2 - ex_series)
+    assert_series_equal((2 / me)(ex_series), 2 / ex_series)
+    assert_series_equal((2 ** me)(ex_series), 2 ** ex_series)
+    # With indexing
+    assert_series_equal((2 *  me.A)(ex_df), 2 *  ex_df.A)
+    assert_series_equal((2 +  me.A)(ex_df), 2 +  ex_df.A)
+    assert_series_equal((2 -  me.A)(ex_df), 2 -  ex_df.A)
+    assert_series_equal((2 /  me.A)(ex_df), 2 /  ex_df.A)
+    assert_series_equal((2 ** me.A)(ex_df), 2 ** ex_df.A)
+
+def test_chained_math():
+    assert_series_equal(((me + 2) * 3 - 1)(ex_series), ((ex_series + 2) * 3 - 1))
+    assert_series_equal((1 - (2 + me) * 3)(ex_series), (1 - (2 + ex_series) * 3))

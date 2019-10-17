@@ -39,7 +39,9 @@ class BasicFilter(object):
             raise AttributeError('Can not index into an already processing filter objedt')
         return IndexedFilter(name)
 
-    # Overloading of the necessary operators
+    ## Overloading of the necessary operators
+
+    # Comparison
     def __eq__(self, value):
         return OpsFilter(self, lambda x, inner: inner(x) == _try_call(value, x))
 
@@ -57,6 +59,55 @@ class BasicFilter(object):
 
     def __le__(self, value):
         return OpsFilter(self, lambda x, inner: inner(x) <= _try_call(value, x))
+
+    # Math
+    def __add__(self, value):
+        return OpsFilter(self, lambda x, inner: inner(x) + _try_call(value, x))
+
+    def __sub__(self, value):
+        return OpsFilter(self, lambda x, inner: inner(x) - _try_call(value, x))
+
+    def __mul__(self, value):
+        return OpsFilter(self, lambda x, inner: inner(x) * _try_call(value, x))
+
+    def __truediv__(self, value):
+        return OpsFilter(self, lambda x, inner: inner(x) / _try_call(value, x))
+
+    def __floordiv__(self, value):
+        return OpsFilter(self, lambda x, inner: inner(x) // _try_call(value, x))
+
+    def __pow__(self, value):
+        return OpsFilter(self, lambda x, inner: inner(x) ** _try_call(value, x))
+
+    def __mod__(self, value):
+        return OpsFilter(self, lambda x, inner: inner(x) % _try_call(value, x))
+
+    # Reverse Math
+
+    def __radd__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) + inner(x))
+
+    def __rsub__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) - inner(x))
+
+    def __rmul__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) * inner(x))
+
+    def __rtruediv__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) / inner(x))
+
+    def __rfloordiv__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) // inner(x))
+
+    def __rpow__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) ** inner(x))
+
+    def __rmod__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) % inner(x))
+
+    # Mathematical negation
+    def __neg__(self):
+        return OpsFilter(self, lambda x, inner: -inner(x))
 
     # Add custom operations here
     def isin(self, value):
@@ -78,7 +129,6 @@ class BasicFilter(object):
     def __invert__(self):
         return OpsFilter(self, lambda x, inner: ~inner(x))
 
-    # Allows to use also combination with bitmasks on the right side
     def __and__(self, other):
         return OpsFilter(self, lambda x, inner: inner(x) & _try_call(other, x))
 
@@ -87,6 +137,17 @@ class BasicFilter(object):
 
     def __xor__(self, other):
         return OpsFilter(self, lambda x, inner: inner(x) ^ _try_call(other, x))
+
+    # reversed operations to accept a binary mask also on the left side
+    def __rand__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) & inner(x))
+
+    def __ror__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) | inner(x))
+
+    def __rxor__(self, value):
+        return OpsFilter(self, lambda x, inner: _try_call(value, x) ^ inner(x))
+
 
 class IndexedFilter(BasicFilter):
     def __init__(self, index_name):
