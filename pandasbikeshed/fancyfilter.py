@@ -138,7 +138,7 @@ class BasicFilter(object):
     def __xor__(self, other):
         return OpsFilter(self, lambda x, inner: inner(x) ^ _try_call(other, x))
 
-    # reversed operations to accept a binary mask also on the left side
+    # reversed operations (won't accept numpy etc.)
     def __rand__(self, value):
         return OpsFilter(self, lambda x, inner: _try_call(value, x) & inner(x))
 

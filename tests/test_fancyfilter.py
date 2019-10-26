@@ -119,6 +119,22 @@ def test_math():
     assert_series_equal((me.A / 2)(ex_df), ex_df.A / 2)
     assert_series_equal((me.A ** 2)(ex_df), ex_df.A ** 2)
 
+def test_numpy_math():
+    sl = np.ones_like(ex_series) * 2
+    assert_series_equal((me * sl)(ex_series), ex_series * sl)
+    assert_series_equal((me + sl)(ex_series), ex_series + sl)
+    assert_series_equal((me - sl)(ex_series), ex_series - sl)
+    assert_series_equal((me / sl)(ex_series), ex_series / sl)
+    assert_series_equal((me ** sl)(ex_series), ex_series ** sl)
+    # With indexing
+    dfl = np.ones_like(ex_df.A) * 2
+    assert_series_equal((me.A * dfl)(ex_df), ex_df.A * dfl)
+    assert_series_equal((me.A + dfl)(ex_df), ex_df.A + dfl)
+    assert_series_equal((me.A - dfl)(ex_df), ex_df.A - dfl)
+    assert_series_equal((me.A / dfl)(ex_df), ex_df.A / dfl)
+    assert_series_equal((me.A ** dfl)(ex_df), ex_df.A ** dfl)
+
+
 def test_inverted_math():
     assert_series_equal((2 * me)(ex_series), 2 * ex_series)
     assert_series_equal((2 + me)(ex_series), 2 + ex_series)
@@ -131,6 +147,22 @@ def test_inverted_math():
     assert_series_equal((2 -  me.A)(ex_df), 2 -  ex_df.A)
     assert_series_equal((2 /  me.A)(ex_df), 2 /  ex_df.A)
     assert_series_equal((2 ** me.A)(ex_df), 2 ** ex_df.A)
+
+@pytest.mark.xfail
+def test_bad_inverted_math():
+    sl = np.ones_like(ex_series) * 2
+    assert_series_equal((sl * me)(ex_series), sl * ex_series)
+    assert_series_equal((sl + me)(ex_series), sl + ex_series)
+    assert_series_equal((sl - me)(ex_series), sl - ex_series)
+    assert_series_equal((sl / me)(ex_series), sl / ex_series)
+    assert_series_equal((sl ** me)(ex_series), sl ** ex_series)
+    # With indexing
+    dfl = np.ones_like(ex_df.A) * 2
+    assert_series_equal((dfl *  me.A)(ex_df), dfl *  ex_df.A)
+    assert_series_equal((dfl +  me.A)(ex_df), dfl +  ex_df.A)
+    assert_series_equal((dfl -  me.A)(ex_df), dfl -  ex_df.A)
+    assert_series_equal((dfl /  me.A)(ex_df), dfl /  ex_df.A)
+    assert_series_equal((dfl ** me.A)(ex_df), dfl ** ex_df.A)
 
 def test_chained_math():
     assert_series_equal(((me + 2) * 3 - 1)(ex_series), ((ex_series + 2) * 3 - 1))
