@@ -18,7 +18,7 @@ def run(filename=None, escape=False, print_it=True):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='clip2tex', description='A small command-line tool to convert tables copied to the clipboard e.g. from MS Excel or GDrive to a simple LaTeX')
-    parser.add_argument('FILENAME', required=False,)
+    parser.add_argument('FILENAME', nargs='?')
     parser.add_argument('--escape', '-e', action='store_true', help='Set to escape all special characters')
     args = parser.parse_args()
     if args.FILENAME:
