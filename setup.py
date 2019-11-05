@@ -5,7 +5,7 @@
 
 from setuptools import setup, find_packages
 
-requirements = ['pandas', 'numpy', 'seaborn']
+requirements = ['pandas', 'numpy']
 
 setup_requirements = ['pytest-runner', ]
 
@@ -19,13 +19,9 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     description="This is a fine selection of random useful or useless code and helper functions collected to simplify my life with the great pandas.",
     install_requires=requirements,
