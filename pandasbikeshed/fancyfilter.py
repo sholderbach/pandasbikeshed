@@ -2,12 +2,15 @@ import pandas as pd
 import numpy as np
 from functools import partial
 
+
 def _try_call(obj, arg):
     if callable(obj):
         return obj(arg, internal=True)
     else:
         return obj
 #
+
+
 class BasicFilter(object):
     def __init__(self):
         pass
@@ -22,13 +25,16 @@ class BasicFilter(object):
 
     # illegal operations
     def __delattr__(self, name):
-        raise AttributeError('Filter objects are read-only! You can not delete attributes!')
+        raise AttributeError(
+            'Filter objects are read-only! You can not delete attributes!')
 
     def __setitem__(self, name, value):
-        raise AttributeError('Filter objects are read-only! You can not assign to them via = or :=')
+        raise AttributeError(
+            'Filter objects are read-only! You can not assign to them via = or :=')
 
     def __delitem__(self, name):
-        raise AttributeError('Filter objects are read-only! You can not delete attributes!')
+        raise AttributeError(
+            'Filter objects are read-only! You can not delete attributes!')
 
     # Allow indexing
     def __getattr__(self, name):
@@ -38,17 +44,19 @@ class BasicFilter(object):
         # - Filter for the names of known attributes in pd.Series und DataFrame
         # - TypeCheck during __call__ (Probably very unreliable)
         if self.__class__ is not BasicFilter:
-            raise AttributeError('Can not index into an already processing filter objedt')
+            raise AttributeError(
+                'Can not index into an already processing filter objedt')
         return IndexedFilter(name)
 
     def __getitem__(self, name):
         # TODO: think about way's how this wouldn't be required
         # Maybe replace with similar delayed execution magic
         if self.__class__ is not BasicFilter:
-            raise AttributeError('Can not index into an already processing filter objedt')
+            raise AttributeError(
+                'Can not index into an already processing filter objedt')
         return IndexedFilter(name)
 
-    ## Overloading of the necessary operators
+    # Overloading of the necessary operators
 
     # Comparison
     def __eq__(self, value):
@@ -161,8 +169,10 @@ class BasicFilter(object):
 class IndexedFilter(BasicFilter):
     def __init__(self, index_name):
         if not isinstance(index_name, str):
-            raise TypeError('The filter indexer can only be used with column names as str')
+            raise TypeError(
+                'The filter indexer can only be used with column names as str')
         self._col = index_name
+
     def __call__(self, pd_obj, internal=False):
         try:
             result = pd_obj[self._col]
@@ -170,11 +180,13 @@ class IndexedFilter(BasicFilter):
             try:
                 result = pd_obj.index.get_level_values(self._col)
             except:
-                raise KeyError(f'Name {self._col} not found in columns or index')
+                raise KeyError(
+                    f'Name {self._col} not found in columns or index')
         if internal:
             return result
         else:
             return result.astype('bool')
+
 
 class OpsFilter(BasicFilter):
     def __init__(self, filter_obj, operation):
@@ -190,4 +202,4 @@ class OpsFilter(BasicFilter):
             return self._op(pd_obj, partial(self._inner_filter, internal=True))
 
 
-me=BasicFilter()
+me = BasicFilter()
