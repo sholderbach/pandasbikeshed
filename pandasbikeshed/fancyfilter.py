@@ -18,6 +18,8 @@ class BasicFilter(object):
         else:
             return slice(None)
 
+    # TODO: Add an optional subclass that stores available column names for reuse and IPython support
+
     # illegal operations
     def __delattr__(self, name):
         raise AttributeError('Filter objects are read-only! You can not delete attributes!')
@@ -30,11 +32,18 @@ class BasicFilter(object):
 
     # Allow indexing
     def __getattr__(self, name):
+        # TODO: could this be adopted to support arbitrary methods by creating a callable object?
+        # Thoughts: attribute syntax for column selection is very convenient (reason for this workaround)
+        # Alternatives:
+        # - Filter for the names of known attributes in pd.Series und DataFrame
+        # - TypeCheck during __call__ (Probably very unreliable)
         if self.__class__ is not BasicFilter:
             raise AttributeError('Can not index into an already processing filter objedt')
         return IndexedFilter(name)
 
     def __getitem__(self, name):
+        # TODO: think about way's how this wouldn't be required
+        # Maybe replace with similar delayed execution magic
         if self.__class__ is not BasicFilter:
             raise AttributeError('Can not index into an already processing filter objedt')
         return IndexedFilter(name)
