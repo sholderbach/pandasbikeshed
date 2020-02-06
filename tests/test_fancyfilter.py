@@ -95,7 +95,6 @@ def test_boolmask():
     assert_frame_equal(ex_df[(me.A<0) | mask], ex_df[other_mask | mask])
     assert_frame_equal(ex_df[(me.A<0) ^ mask], ex_df[other_mask ^ mask])
 
-@pytest.mark.xfail
 def test_boolmask_inverted():
     mask = np.array(ex_df.C > 0)
     other_mask = ex_df.A < 0
@@ -148,8 +147,7 @@ def test_inverted_math():
     assert_series_equal((2 /  me.A)(ex_df), 2 /  ex_df.A)
     assert_series_equal((2 ** me.A)(ex_df), 2 ** ex_df.A)
 
-@pytest.mark.xfail
-def test_bad_inverted_math():
+def test_np_inverted_math():
     sl = np.ones_like(ex_series) * 2
     assert_series_equal((sl * me)(ex_series), sl * ex_series)
     assert_series_equal((sl + me)(ex_series), sl + ex_series)

@@ -15,6 +15,8 @@ class BasicFilter(object):
     def __init__(self):
         pass
 
+    __array_priority__ = 1
+
     def __call__(self, pd_obj, internal=False):
         if internal:
             return pd_obj
