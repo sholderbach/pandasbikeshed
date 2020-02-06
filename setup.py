@@ -10,7 +10,8 @@ requirements = ['pandas',
 
 setup_requirements = ['pytest-runner', ]
 
-test_requirements = ['pytest', ]
+test_requirements = ['pytest',
+                     'scipy']
 
 setup(
     author="Stefan Holderbach",
