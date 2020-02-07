@@ -6,30 +6,32 @@ import seaborn as sns
 from scipy.stats import pearsonr, spearmanr
 
 
-def robust_hist(x, color=None, label=None, **kwargs):
+def robust_hist(x, ax=None, **kwargs):
     mask = np.isfinite(x)
-    plt.hist(x[mask], color=color, label=label, **kwargs)
+    ax = ax or plt.gca()
+    ax.hist(x[mask], **kwargs)
+    return ax
 
-def robust_scatter(x, y, color=None, label=None, size=0.5, alpha=0.3, **kwargs):
+def robust_scatter(x, y, size=0.5, alpha=0.3, **kwargs):
     mask = np.isfinite(x) & np.isfinite(y)
-    sns.scatterplot(x[mask], y[mask], color=color, label=label, size=size, alpha=alpha, **kwargs)
+    return sns.scatterplot(x[mask], y[mask], size=size, alpha=alpha, **kwargs)
 
-def robust_kde(x, y=None, color=None, label=None, **kwargs):
+def robust_kde(x, y=None, **kwargs):
     if y:
         mask = np.isfinite(x) & np.isfinite(y)
-        sns.kdeplot(x[mask], y[mask], color=color, label=label, **kwargs)
+        return sns.kdeplot(x[mask], y[mask], **kwargs)
     else:
         mask = np.isfinite(x)
-        sns.kdeplot(x[mask], color=color, label=label, **kwargs)
+        return sns.kdeplot(x[mask], **kwargs)
 
 
 
-def robust_info(x, y, color=None, label=None, **kwargs):
+def robust_info(x, y, ax=None, **kwargs):
     mask = np.isfinite(x) & np.isfinite(y)
     n = np.sum(mask)
     pear_r, pear_p = pearsonr(x[mask], y[mask])
     spea_r, spea_p = spearmanr(x[mask], y[mask])
-    ax = plt.gca()
+    ax = ax or plt.gca()
     ax.annotate(
              f'N = {n} \n'
              f'Pearson:\nr={pear_r:.3f} p={pear_p:.2E}\n'
@@ -39,6 +41,7 @@ def robust_info(x, y, color=None, label=None, **kwargs):
              va='center', ha='center',
              wrap=True,
              **kwargs)
+    return ax
 
 def robust_pairplot(df, lower_kind='scatter', upper_kind='info', diag_kind='hist', **kwargs):
     diag_methods = {'hist': robust_hist, 'kde': robust_kde}
@@ -47,3 +50,4 @@ def robust_pairplot(df, lower_kind='scatter', upper_kind='info', diag_kind='hist
     g.map_diag(diag_methods[diag_kind])
     g.map_upper(tria_methods[upper_kind])
     g.map_lower(tria_methods[lower_kind])
+    return g
