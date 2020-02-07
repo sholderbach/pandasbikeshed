@@ -6,12 +6,14 @@
 from setuptools import setup, find_packages
 
 requirements = ['pandas',
-                'numpy']
+                'numpy',
+                'matplotlib',
+                'seaborn',
+                'scipy']
 
 setup_requirements = ['pytest-runner', ]
 
-test_requirements = ['pytest',
-                     'scipy']
+test_requirements = ['pytest',]
 
 setup(
     author="Stefan Holderbach",
