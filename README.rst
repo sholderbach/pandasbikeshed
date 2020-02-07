@@ -1,10 +1,21 @@
 ===============
-Pandas-Bikeshed
+pandasbikeshed
 ===============
+.. image:: https://github.com/sholderbach/pandasbikeshed/workflows/tests/badge.svg
 
+pandas
+  1. Plural of a rare, black and white mammal *Ailuropoda melanoleuca*, commonly, but mistakenly known as the panda
+  2. Plural of (now rare without qualifying word) the red panda, a small raccoon-like animal, Ailurus fulgens of northeast Asia with reddish fur and a long, ringed tail.
+  3. a fast, powerful, flexible and easy to use open source data analysis and manipulation tool, built on top of the Python programming language.
 
-This is a fine selection of random useful or useless code and helper functions collected to simplify my life with the great pandas.
+bikeshed
+  Structure to store small vehicles such as bicycles
 
+bikesheddding
+  1. Futile investment of time and energy in discussion of marginal technical issues.
+  2. Procrastination
+  
+  Definitions from `Wictionary <https://en.wiktionary.org/wiki/bikeshedding>`_:
 
 Installation
 ------------
