@@ -7,16 +7,36 @@ from scipy.stats import pearsonr, spearmanr
 
 
 def robust_hist(x, ax=None, **kwargs):
+    """
+    Wrapper function to `plt.hist` dropping values that are not finite
+
+    Returns:
+        Axes
+    """
     mask = np.isfinite(x)
     ax = ax or plt.gca()
     ax.hist(x[mask], **kwargs)
     return ax
 
 def robust_scatter(x, y, size=0.5, alpha=0.3, **kwargs):
+    """
+    Wrapper function to `sns.scatterplot` dropping value pairs that are not finite
+
+    Sets default `size` of 0.5 and `alpha` to 0.3
+
+    Returns:
+        Axes
+    """
     mask = np.isfinite(x) & np.isfinite(y)
     return sns.scatterplot(x[mask], y[mask], size=size, alpha=alpha, **kwargs)
 
 def robust_kde(x, y=None, **kwargs):
+    """
+    Wrapper function to `sns.kdeplot` dropping values or value pairs that are not finite
+
+    Returns:
+        Axes
+    """
     if y:
         mask = np.isfinite(x) & np.isfinite(y)
         return sns.kdeplot(x[mask], y[mask], **kwargs)
@@ -27,6 +47,16 @@ def robust_kde(x, y=None, **kwargs):
 
 
 def robust_info(x, y, ax=None, **kwargs):
+    """
+    Prints correlation information of two arrays into axis.
+
+    Useful for `sns.PairGrid` (see `pb.plot.robust_pairplot`).
+    As non finite value pairs are dropped prints number of comparisons.
+    Pearson and Spearman correlation values with associated p-value.
+
+    Returns:
+        Axes
+    """
     mask = np.isfinite(x) & np.isfinite(y)
     n = np.sum(mask)
     pear_r, pear_p = pearsonr(x[mask], y[mask])
@@ -44,6 +74,17 @@ def robust_info(x, y, ax=None, **kwargs):
     return ax
 
 def robust_pairplot(df, lower_kind='scatter', upper_kind='info', diag_kind='hist', **kwargs):
+    """
+    Similar function to `sns.pairplot` that drops non-finite value pairs instead of all rows containing NaNs
+
+    Args:
+        lower_kind: {'scatter', 'kde', 'info'}
+        upper_kind: {'scatter', 'kde', 'info'}
+        diag_kind: {'hist', 'kde'}
+
+    Returns:
+        sns.PairGrid
+    """
     diag_methods = {'hist': robust_hist, 'kde': robust_kde}
     tria_methods = {'scatter': robust_scatter, 'kde': robust_kde, 'info': robust_info}
     g = sns.PairGrid(df)
