@@ -92,3 +92,27 @@ def robust_pairplot(df, lower_kind='scatter', upper_kind='info', diag_kind='hist
     g.map_upper(tria_methods[upper_kind])
     g.map_lower(tria_methods[lower_kind])
     return g
+
+def corr_heatmap(df, method='pearson', triangle_only=True,
+                 ax=None,
+                 cmap='RdBu_r', linewidths=0.1,
+                 **heat_map_kwargs):
+    """
+    Plot a correlation heatmap directly from a dataframe
+
+    Args:
+        df: pd.DataFrame
+        method: {'pearson', 'spearman'}
+        triangle_only: bool
+            Hide the diagonal and upper triangle.
+            default=True
+
+    Returns:
+        Axes
+    """
+    corrmat = df.corr(method=method)
+    mask = (~np.tri(corrmat.shape, k=-1, dtype=np.bool)) if triangle_only else None
+    locator = mpl.ticker.MultipleLocator(0.25)
+    return sns.heatmap(corrmat, ax=ax, mask=mask,
+                       vmin=-1., vmax=1., center=0, cbar_kws={'ticks': locator},
+                       linewidths=linewidths, **heat_map_kwargs)
