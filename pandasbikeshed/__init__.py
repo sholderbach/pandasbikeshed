@@ -8,3 +8,4 @@ __version__ = '0.1.0'
 
 from pandasbikeshed.basic_ops import flat_corr
 from pandasbikeshed.fancyfilter import me
+import pandasbikeshed.plot
