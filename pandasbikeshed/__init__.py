@@ -7,3 +7,4 @@ __email__ = 'ho.steve@web.de'
 __version__ = '0.1.0'
 
 from pandasbikeshed.basic_ops import flat_corr
+from pandasbikeshed.fancyfilter import me
