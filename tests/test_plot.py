@@ -47,3 +47,6 @@ def test_corr_heatmap():
     assert isinstance(corr_heatmap(nan_df, method='spearman'), plt.Axes)
     assert isinstance(corr_heatmap(nan_df, triangle_only=False), plt.Axes)
 
+def test_dist_catplot():
+    assert isinstance(dist_catplot(nan_df,), sns.FacetGrid)
+    assert isinstance(dist_catplot(nan_df, kind='kde'), sns.FacetGrid)

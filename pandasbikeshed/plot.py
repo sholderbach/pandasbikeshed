@@ -116,3 +116,9 @@ def corr_heatmap(df, method='pearson', triangle_only=True,
     return sns.heatmap(corrmat, ax=ax, mask=mask,
                        vmin=-1., vmax=1., center=0, cbar_kws={'ticks': locator},
                        linewidths=linewidths, **heat_map_kwargs)
+
+def dist_catplot(data=None, kind='hist', **facet_kwargs):
+    plt_funcs = {'hist': plt.hist, 'kde': sns.kdeplot}
+    g = sns.FacetGrid(data, **facet_kwargs)
+    g.map(plt_funcs[kind])
+    return g
