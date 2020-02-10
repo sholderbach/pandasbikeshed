@@ -19,6 +19,7 @@ from pandasbikeshed.plot import (robust_hist,
 nan_df = pd_samples.makeMissingDataframe()
 nan_a = nan_df['A']
 nan_b = nan_df['B']
+mixed_df = pd_samples.makeMixedDataFrame()
 
 def test_robust_hist():
     assert isinstance(robust_hist(nan_a), plt.Axes)
@@ -50,3 +51,10 @@ def test_corr_heatmap():
 def test_dist_catplot():
     assert isinstance(dist_catplot(nan_df,), sns.FacetGrid)
     assert isinstance(dist_catplot(nan_df, kind='kde'), sns.FacetGrid)
+    assert isinstance(dist_catplot(nan_df, dist_columns=['A', 'B'], col_wrap=1), sns.FacetGrid)
+    assert isinstance(dist_catplot(mixed_df), sns.FacetGrid)
+    assert isinstance(dist_catplot(mixed_df, col='C'), sns.FacetGrid)
+    assert isinstance(dist_catplot(mixed_df, row='C'), sns.FacetGrid)
+    assert isinstance(dist_catplot(mixed_df, hue='C'), sns.FacetGrid)
+    assert isinstance(dist_catplot(mixed_df, x='A', col='C'), sns.FacetGrid)
+

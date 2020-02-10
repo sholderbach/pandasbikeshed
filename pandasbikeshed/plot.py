@@ -117,8 +117,36 @@ def corr_heatmap(df, method='pearson', triangle_only=True,
                        vmin=-1., vmax=1., center=0, cbar_kws={'ticks': locator},
                        linewidths=linewidths, **heat_map_kwargs)
 
-def dist_catplot(data=None, kind='hist', **facet_kwargs):
+def dist_catplot(data=None, x=None, kind='hist', dist_columns=None,
+                 col=None, row=None, hue=None, col_wrap=None,
+                 **facet_kwargs):
+    if x is None:
+        if dist_columns is not None:
+            numeric_columns = dist_columns
+        else:
+            numeric_columns = [name
+                                for name, dtype
+                                in data.dtypes.items()
+                                if pd.api.types.is_numeric_dtype(dtype)]
+        non_numeric_columns = data.columns.difference(numeric_columns)
+        cols_name = data.columns.name or 'columns'
+        hist_col = 'value' if 'value' not in data.columns else 'histogram_value'
+        dat = data.melt(id_vars=non_numeric_columns,
+                        value_vars=numeric_columns,
+                        var_name=cols_name,
+                        value_name=hist_col)
+        if col is None:
+            col = cols_name
+        elif row is None and col_wrap is None:
+            row = cols_name
+        elif hue is None:
+            hue = cols_name
+        else:
+            raise ValueError('No dimension available to unpack the numeric columns.')
+    else:
+        dat = data
+        hist_col = x
     plt_funcs = {'hist': plt.hist, 'kde': sns.kdeplot}
-    g = sns.FacetGrid(data, **facet_kwargs)
-    g.map(plt_funcs[kind])
+    g = sns.FacetGrid(dat, col=col, row=row, hue=hue, col_wrap=col_wrap, **facet_kwargs)
+    g.map(plt_funcs[kind], hist_col)
     return g
