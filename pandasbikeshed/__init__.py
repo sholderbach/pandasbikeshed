@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for Pandas-Bikeshed."""
+"""Top-level package for pandasbikeshed."""
 
 __author__ = """Stefan Holderbach"""
 __email__ = 'ho.steve@web.de'

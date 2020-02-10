@@ -37,7 +37,7 @@ def robust_kde(x, y=None, **kwargs):
     Returns:
         Axes
     """
-    if y:
+    if y is not None:
         mask = np.isfinite(x) & np.isfinite(y)
         return sns.kdeplot(x[mask], y[mask], **kwargs)
     else:
@@ -111,7 +111,7 @@ def corr_heatmap(df, method='pearson', triangle_only=True,
         Axes
     """
     corrmat = df.corr(method=method)
-    mask = (~np.tri(corrmat.shape, k=-1, dtype=np.bool)) if triangle_only else None
+    mask = (~np.tri(corrmat.shape[0], k=-1, dtype=np.bool)) if triangle_only else None
     locator = mpl.ticker.MultipleLocator(0.25)
     return sns.heatmap(corrmat, ax=ax, mask=mask,
                        vmin=-1., vmax=1., center=0, cbar_kws={'ticks': locator},
