@@ -111,11 +111,12 @@ def corr_heatmap(df, method='pearson', triangle_only=True,
         Axes
     """
     corrmat = df.corr(method=method)
-    mask = (~np.tri(corrmat.shape[0], k=-1, dtype=np.bool)) if triangle_only else None
+    mask = (~np.tri(corrmat.shape[0], dtype=np.bool)) if triangle_only else None
     locator = mpl.ticker.MultipleLocator(0.25)
     return sns.heatmap(corrmat, ax=ax, mask=mask,
                        vmin=-1., vmax=1., center=0, cbar_kws={'ticks': locator},
-                       linewidths=linewidths, **heat_map_kwargs)
+                       linewidths=linewidths, cmap=cmap,
+                       **heat_map_kwargs)
 
 def dist_catplot(data=None, x=None, kind='hist', dist_columns=None,
                  col=None, row=None, hue=None, col_wrap=None,
