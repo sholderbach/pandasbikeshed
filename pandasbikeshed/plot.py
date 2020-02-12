@@ -81,13 +81,14 @@ def robust_pairplot(df, lower_kind='scatter', upper_kind='info', diag_kind='hist
         lower_kind: {'scatter', 'kde', 'info'}
         upper_kind: {'scatter', 'kde', 'info'}
         diag_kind: {'hist', 'kde'}
+        **kwargs: passed to sns.PairGrid
 
     Returns:
         sns.PairGrid
     """
     diag_methods = {'hist': robust_hist, 'kde': robust_kde}
     tria_methods = {'scatter': robust_scatter, 'kde': robust_kde, 'info': robust_info}
-    g = sns.PairGrid(df)
+    g = sns.PairGrid(df, **kwargs)
     g.map_diag(diag_methods[diag_kind])
     g.map_upper(tria_methods[upper_kind])
     g.map_lower(tria_methods[lower_kind])
@@ -121,6 +122,25 @@ def corr_heatmap(df, method='pearson', triangle_only=True,
 def dist_catplot(data=None, x=None, kind='hist', dist_columns=None,
                  col=None, row=None, hue=None, col_wrap=None,
                  **facet_kwargs):
+    """
+    Make faceted histograms or kdeplots either from tidy longform data or columns of a wide DataFrame
+
+    Args:
+        data: pd.DataFrame
+        x: str, None
+            Defines a column in tidy data, from which to take the values for the histogram.
+            If unspecified, numeric columns are considered for the histograms
+        kind: {'hist', 'kde'}
+        dist_columns: Iterable column names, optional
+            If x unspecified, defines the columns to be considered for histograms
+        col, row, hue: str, optional
+            Column names to facet the data.
+        col_wrap: int, optional
+            breaks cols, if no row specified
+
+    Returns:
+        sns.FacetGrid
+    """
     if x is None:
         if dist_columns is not None:
             numeric_columns = dist_columns
