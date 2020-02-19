@@ -26,6 +26,25 @@ def read_with_metadata_dict(filename):
     data = pd.read_csv(filename, sep='\t', comment='#', )
     return data, metadata
 
+def read_only_metadata_dict(filename):
+  """
+  Returns: metadata
+  """
+  metadata = {}
+  with open(filename) as fh:
+    # Process a contiguous block of metadata
+    # format '# var_name: value'
+    for line in fh:
+      if line.startswith('#'):
+        lsplits = line.strip().split(' ')
+        try:
+          meta = int(lsplits[2])
+        except ValueError:
+          meta = lsplits[2]
+        metadata[lsplits[1][:-1]] = meta
+      else:
+        break
+  return metadata
 
 def write_with_metadata_dict(filename, data, metadata):
     metadata_str = metadata_to_str(metadata)
